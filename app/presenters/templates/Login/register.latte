@@ -1,0 +1,64 @@
+{block content}
+    <div class="row">
+        <div class='col-md-3'></div>
+        <div class="col-md-6">
+            <div class="login-box well">
+                {form registerForm class=>"form-horizontal"}
+                    <legend>{block title}Vytvoření účtu{/block}</legend>
+                    <div n:foreach="$flashes as $flash" class="alert, alert-{$flash->type} flashMessage" role="alert">{$flash->message}</div>
+                    <div class="form-group">
+                        <div class="col-md-2">{label name class=>"col-lg-2 control-label text-bold"/}</div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                 </span>
+                                {input name class=>"form-control", placeholder=>"Jméno"}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2">{label email class=>"col-lg-2 control-label"/}</div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                 </span>
+                                {input email class=>"form-control", placeholder=>"Email"}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2">{label password class=>"col-lg-2 control-label"/}</div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                 </span>
+                                {input password class=>"form-control", placeholder=>"Heslo"}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            {input send class=>"btn btn-default btn-login-submit btn-block m-t-md"}
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <a n:href="Login:" class="btn btn-default btn-block m-t-md">Zpět na přihlášení</a>
+                    </div>
+                {/form}
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    Uctenka v1.0 &copy {date("Y")}
+                </div>
+            </div>
+        </div>
+        <div class='col-md-3'></div>
+    </div>
+{/block}
+{block sheets}
+    <link rel="stylesheet" href="{$basePath}/css/login.css">
+{/block}

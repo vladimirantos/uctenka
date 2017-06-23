@@ -1,0 +1,118 @@
+{block content}
+<div class="row center-block mt10" style="">
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title">Nastavení reportu</span>
+            </div>
+            <div class="panel-body">
+                {form reportForm class=>"form-horizontal"}
+                    <div class="form-group">
+                        {label financialGroups class=>"col-lg-3 control-label" /}
+                        <div class="col-lg-8">
+                            <div class="bs-component">
+                                {input financialGroups class=>"form-control"}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {label date class=>"col-lg-3 control-label" /}
+                        <div class="col-lg-8">
+                            <div class="bs-component">
+                                {input date class=>"form-control", id=>"datetimepicker", autocomplete=>"off"}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-8 col-lg-offset-3">
+                            <div class="bs-component">
+                                {input send class=>"btn btn-success"}
+                            </div>
+                        </div>
+                    </div>
+                {/form}
+            </div>
+        </div>
+    </div>
+    {if !empty($reportData)}
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Uživatelé</span>
+                </div>
+                <div class="panel-body">
+                    <table class="table admin-form theme-warning tc-checkbox-1">
+                        <tr>
+                            <th>Uživatel</th>
+                            <th>Celková cena</th>
+                            <th>Rozdíl</th>
+                        </tr>
+                        {foreach $userSummary as $usrSumm}
+                            <tr>
+                                <td style="text-align: left">{$usrSumm["userName"]}</td>
+                                <td>{$usrSumm["totalPrice"]|number:0:'.':' '} Kč</td>
+                                <td>
+                                    {var $x = $totalPrice/2 - $usrSumm["totalPrice"]}
+                                    {if $x > 0}
+                                        -{$x|number:0:'.':' '} Kč
+                                    {/if}
+                                </td>
+                            </tr>
+                        {/foreach}
+                        <tr>
+                            <td></td>
+                            <td colspan="2"><strong>Celkem: {$totalPrice|number:0:'.':' '} Kč</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {/if}
+    </div>
+{if !empty($reportData)}
+<div class="row center-block mt10" style="">
+
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Měsíční přehled <strong>{$reportData[0]["groupName"]}</strong></span>
+                </div>
+                <div class="panel-body">
+                    <table class="table admin-form theme-warning tc-checkbox-1 fs13">
+                        <thead>
+                        <tr class="bg-light">
+                            <th class="col-md-1">Vložil</th>
+                            <th class="col-md-2">Popis</th>
+                            <th class="col-md-1">Cena</th>
+                            <th class="col-md-1">Datum platby</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $reportData as $report}
+                            <tr>
+                                <td>{$report["userName"]}</td>
+                                <td>{$report["description"]}</td>
+                                <td>{$report["price"]|number:0:'.':' '} Kč</td>
+                                <td>{$report["paymentsDate"]|date:'d. m. Y'}</td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+{/if}
+
+{block scripts}
+    <script type="application/javascript">
+        $("#datetimepicker").datepicker( {
+            format: "mm-yyyy",
+            viewMode: "months",
+            language: "cs",
+            minViewMode: "months"
+        });
+    </script>
+{/block }

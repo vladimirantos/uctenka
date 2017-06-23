@@ -1,0 +1,148 @@
+{block content}
+    <div class="row center-block mt10" style="">
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Vytvoření skupiny</span>
+                </div>
+                <div class="panel-body">
+
+                    {form createGroupForm class=>"form-horizontal"}
+                        <div class="form-group">
+                            {label name class=>"col-lg-3 control-label" /}
+                            <div class="col-lg-8">
+                                <div class="bs-component">
+                                    {input name class=>"form-control", autocomplete=>"off"}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {label type class=>"col-lg-3 control-label" /}
+                            <div class="col-lg-8">
+                                <div class="bs-component">
+                                    {input type class=>"form-control"}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-8 col-lg-offset-3">
+                                <div class="bs-component">
+                                    {input send class=>"btn btn-success"}
+                                </div>
+                            </div>
+                        </div>
+
+                    {/form}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Přidání členů</span>
+                </div>
+                <div class="panel-body">
+                    {if empty($sharedGroups)}
+                        <span class="text-danger">Nemáš vytvořenou žádnou sdílenou skupinu.</span>
+                    {else}
+                    {form assignUserGroupForm class=>"form-horizontal"}
+                    <div class="form-group">
+                        {label financialGroup class=>"col-lg-3 control-label" /}
+                        <div class="col-lg-8">
+                            <div class="bs-component">
+                                {input financialGroup class=>"form-control"}
+                            </div>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            {label user class=>"col-lg-3 control-label" /}
+                            <div class="col-lg-8">
+                                <div class="bs-component">
+                                    {input user class=>"form-control", autocomplete=>"off"}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-8 col-lg-offset-3">
+                                <div class="bs-component">
+                                    {input send class=>"btn btn-success"}
+                                </div>
+                            </div>
+                        </div>
+                    {/form}
+                    {/if}
+                </div>
+            </div>
+            </div>
+    </div>
+    <div class="row center-block mt10">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Moje skupiny</span>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>Skupina</th>
+                            <th>Typ</th>
+                            <th>Majitel</th>
+                            <th>Datum vytvoření</th>
+                            <th></th>
+                        </tr>
+                    {foreach $myGroups as $group}
+                        <tr>
+                            <td>{$group["groupName"]}</td>
+                            <td>{App\Model\GroupTypes::convert($group["type"])}</td>
+                            <td>{$group["owner"]}</td>
+                            <td>{$group["creationDate"]|date:'d. m. Y'}</td>
+                            <td>
+                                {if App\Model\GroupTypes::equals($group["type"], App\Model\GroupTypes::SHARED) && count($group["members"]) > 1}
+                                <a class="btn btn-success btn-sm"
+                                   data-toggle="popover"
+                                   data-placement="bottom"
+                                   title="Členové"
+                                   type="button" id="{$iterator->counter}">Členové
+                                    <span class="badge" style="margin-left: 10px">{count($group["members"])}</span></a>
+                                <div id="popover-content-{$iterator->counter}" class="hide" style="padding: 20px;">
+                                        {foreach $group["members"] as $member}
+                                            <div style="width: 350px;">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        {$member["userName"]}
+                                                    </div>
+                                                    <div class="col-md-2 text-right">
+                                                        {if $member["email"] != $group["owner"]}
+                                                            <a n:href="delete! idGroup=>$group['idGroup'],user => $member['email']"><i class="fa fa-times"></i></a>
+                                                        {/if}
+                                                    </div>
+                                                </div>
+                                                <span class="help-block" style="margin-top: 0px; font-size: 12px">{$member["email"]}</span>
+
+                                            </div>
+                                        {/foreach}
+                                </div>
+
+                                {/if}
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block scripts}
+    <script type="text/javascript">
+        $("[data-toggle=popover]").popover({
+            html: true,
+            container: 'body',
+            content: function() {
+                return $('#popover-content-'+$(this).attr("id")).html();
+            }
+
+        });
+    </script>
+{/block}

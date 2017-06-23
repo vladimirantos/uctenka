@@ -1,0 +1,56 @@
+<aside id="sidebar_left" class="nano nano-light affix">
+    <div class="sidebar-left-content nano-content">
+        <header class="sidebar-header">
+            <div class="sidebar-widget author-widget">
+                <div class="media text-center">
+                    <div class="media-body">
+                        <div class="media-author">{$user->name}</div>
+                        <div class="media-links"><a n:href=":Login:signout">Logout</a></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <ul class="nav sidebar-menu">
+            <li class="sidebar-label pt20">Menu</li>
+            <li>
+                <a n:href="Homepage:">
+                    <span class="fa fa-home"></span>
+                    <span class="sidebar-title">Hlavní stránka</span>
+                    {*<span class="sidebar-title-tray">*}
+                    {*<span class="label label-xs bg-primary">New</span>*}
+                    {*</span>*}
+                </a>
+            </li>
+
+            <li>
+                <a n:href="FinancialGroup:">
+                    <span class="fa fa-plus"></span>
+                    <span class="sidebar-title">Platební skupiny</span>
+                </a>
+            </li>
+
+            <li>
+                <a n:href="Report:">
+                    <span class="fa fa-flag"></span>
+                    <span class="sidebar-title">Měsíční přehledy</span>
+                </a>
+            </li>
+
+            <li class="sidebar-label pt25 pb10">Měsíční přehled skupin</li>
+            {foreach $groups as $group}
+                <li class="sidebar-stat" style="margin-bottom: 20px">
+
+                        <span style="margin-left: 20px">
+                            <span class="fa fa-inbox text-info"></span>
+                           <a n:href="changeCurrentGroup! $group['idGroup']">
+                               <span class="sidebar-title text-muted">{$group["groupName"]}</span>
+
+                    </a>
+                            <span class="pull-right mr20 text-muted">{$group["totalPrice"]} Kč</span>
+                        </span>
+
+                </li>
+            {/foreach}
+        </ul>
+    </div>
+</aside>

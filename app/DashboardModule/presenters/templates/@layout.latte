@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>{ifset title}{include title|stripHtml} | {/ifset}Účtenka</title>
+    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{$basePath}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{$basePath}/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="{$basePath}/css/style.css">
+    <link rel="stylesheet" href="{$basePath}/css/bootstrap-datepicker3.min.css">
+
+    <script type="application/javascript" src="{$basePath}/js/jquery-2.2.4.min.js"></script>
+    <script type="application/javascript" src="{$basePath}/js/bootstrap.min.js"></script>
+    <script src="{$basePath}/js/bootstrap-datepicker.min.js"></script>
+    <script src="{$basePath}/js/bootstrap-datepicker.cs.min.js"></script>
+    <script src="{$basePath}/js/netteajax.js"></script>
+    <link rel="icon" href="{$basePath}/favicon.ico">
+    {block sheets}{/block}
+</head>
+
+<body>
+{include navbar.latte}
+{include sidebar.latte}
+<section id="content_wrapper">
+    {include topbar.latte}
+    <section id="content" class="table-layout animated fadeIn">
+        <div class="tray tray-center">
+            {include content}
+        </div>
+        {*<aside class="tray tray-right tray350" data-tray-height="match">*}
+            {*{include rightbar.latte}*}
+        {*</aside>*}
+    </section>
+</section>
+{block scripts}
+
+    <script src="{$basePath}/js/core.js"></script>
+{/block}
+</body>
+</html>
