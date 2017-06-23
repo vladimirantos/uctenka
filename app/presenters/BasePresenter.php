@@ -13,6 +13,9 @@ class BasePresenter extends Presenter{
 
     public function startup() {
         parent::startup();
+        $this->template->appVersion = appVersion;
+        $this->template->releaseDate = releaseDate;
+        $this->template->build = build;
     }
 
     public function errorMessage($message){

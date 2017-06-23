@@ -35,3 +35,6 @@ constants:
 	defaultGroupName: 'Moje skupina'
 	defaultGroupType: 'private'
 	rate: 1
+	appVersion: '1.0.0'
+	releaseDate: '2016-11-04'
+	build: 1611
