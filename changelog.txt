@@ -1,0 +1,4 @@
+Verze 2.0.0
+=================
+- nový layout
+- změna session exiration z 20 minutes na 10 days

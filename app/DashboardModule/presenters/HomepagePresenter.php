@@ -40,7 +40,7 @@ class HomepagePresenter extends DashboardPresenter{
     }
 
     public function actionDefault(){
-        $this->template->mainTitle = "Přehled plateb";
+        $this->template->mainTitle = "Nástěnka";
         $currentMonth = DateTime::now();
         $this->template->payments =
             $this->paymentService->getMonthly($this->getCurrentGroup()["idGroup"],

@@ -11,7 +11,7 @@ database:
 	password:
 
 session:
-	expiration: 30 minutes
+	expiration: 10 days
 
 
 services:
@@ -35,6 +35,6 @@ constants:
 	defaultGroupName: 'Moje skupina'
 	defaultGroupType: 'private'
 	rate: 1
-	appVersion: '1.0.0'
+	appVersion: '2.0.0 BETA'
 	releaseDate: '2016-11-04'
 	build: 1611

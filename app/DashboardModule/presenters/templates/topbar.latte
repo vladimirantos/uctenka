@@ -1,9 +1,9 @@
-<header id="topbar" class="alt">
-    <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <h2>{$mainTitle}</h2>
-                </li>
+{*<header id="topbar" class="alt">*}
+    {*<div class="topbar-left">*}
+            {*<ol class="breadcrumb">*}
+                {*<li class="crumb-active">*}
+                    {*<h2>{$mainTitle}</h2>*}
+                {*</li>*}
 
                 {*<li class="crumb-icon">*}
                 {*<a href="dashboard.html">*}
@@ -14,14 +14,28 @@
                 {*<a href="index.html">Home</a>*}
                 {*</li>*}
                 {*<li class="crumb-trail">Dashboard</li>*}
-            </ol>
-    </div>
-    <div class="topbar-right">
-        <div class="ib topbar-dropdown mt10">
-            <label for="topbar-multiple" class="control-label pr10 fs16" style="font-weight: bold"><strong>{$currentGroup["groupName"]}</strong></label>
-        </div>
-    </div>
-</header>
+            {*</ol>*}
+    {*</div>*}
+    {*<div class="topbar-right">*}
+        {*<div class="ib topbar-dropdown mt10">*}
+            {*<label for="topbar-multiple" class="control-label pr10 fs16" style="font-weight: bold"><strong>{$currentGroup["groupName"]}</strong></label>*}
+        {*</div>*}
+    {*</div>*}
+{*</header>*}
+
+
+<section class="content-header">
+    <h1>
+        {$mainTitle}
+        {if isset($description)}<small>{$description}</small>{/if}
+    </h1>
+    <ol class="breadcrumb">
+        <h4 style="margin-top: -5px">{$currentGroup["groupName"]}</h4>
+    </ol>
+</section>
+
+
+
 <div class="special-alerts">
     <div n:foreach="$flashes as $flash" class="alert alert-{$flash->type} dark alert-dismissable" id="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

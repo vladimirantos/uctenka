@@ -56,7 +56,6 @@ abstract class DashboardPresenter extends BasePresenter{
         $this->template->currentGroup = $this->currentGroup;
         $this->template->lastLogs = $this->log->getLastLogs($this->user->identity->getId(),
             $this->loginLog->getLast($this->user->identity->getId())->loginDate);
-        
     }
 
 
