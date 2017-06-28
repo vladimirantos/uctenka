@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.4.4
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 05, 2016 at 07:23 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 7.0.8
+-- Počítač: innodb.endora.cz:3306
+-- Vytvořeno: Stř 28. čen 2017, 21:59
+-- Verze serveru: 5.6.28-76.1
+-- Verze PHP: 5.4.45
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,19 +14,19 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `finance_manager`
+-- Databáze: `uctenkadb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `groups`
+-- Struktura tabulky `groups`
 --
 
-CREATE TABLE `groups` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `idGroup` int(11) NOT NULL,
   `owner` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
@@ -34,22 +34,12 @@ CREATE TABLE `groups` (
   `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
---
--- Triggers `groups`
---
-DELIMITER $$
-CREATE TRIGGER `groupMember` AFTER INSERT ON `groups` FOR EACH ROW begin
-    insert into group_members(idGroup, user, current) values(NEW.idGroup, NEW.owner, true);
-  end
-$$
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `groups_users`
+-- Zástupná struktura pro pohled `groups_users`
 --
-CREATE TABLE `groups_users` (
+CREATE TABLE IF NOT EXISTS `groups_users` (
 `idGroup` int(11)
 ,`groupName` varchar(50)
 ,`type` enum('private','shared')
@@ -64,10 +54,10 @@ CREATE TABLE `groups_users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_members`
+-- Struktura tabulky `group_members`
 --
 
-CREATE TABLE `group_members` (
+CREATE TABLE IF NOT EXISTS `group_members` (
   `idGroupMember` int(11) NOT NULL,
   `idGroup` int(11) NOT NULL,
   `user` varchar(50) COLLATE utf8_czech_ci NOT NULL,
@@ -77,10 +67,11 @@ CREATE TABLE `group_members` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `group_payments`
+-- Zástupná struktura pro pohled `group_payments`
 --
-CREATE TABLE `group_payments` (
-`idGroup` int(11)
+CREATE TABLE IF NOT EXISTS `group_payments` (
+`idPayment` int(11)
+,`idGroup` int(11)
 ,`groupName` varchar(50)
 ,`owner` varchar(50)
 ,`email` varchar(50)
@@ -93,10 +84,10 @@ CREATE TABLE `group_payments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log`
+-- Struktura tabulky `log`
 --
 
-CREATE TABLE `log` (
+CREATE TABLE IF NOT EXISTS `log` (
   `id` int(11) NOT NULL,
   `sender` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `idGroup` int(11) NOT NULL,
@@ -107,10 +98,23 @@ CREATE TABLE `log` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payments`
+-- Struktura tabulky `login_log`
 --
 
-CREATE TABLE `payments` (
+CREATE TABLE IF NOT EXISTS `login_log` (
+  `id` int(11) NOT NULL,
+  `email` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `ipAddress` varchar(12) COLLATE utf8_czech_ci NOT NULL,
+  `loginDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `payments`
+--
+
+CREATE TABLE IF NOT EXISTS `payments` (
   `idPayment` int(11) NOT NULL,
   `idGroup` int(11) NOT NULL,
   `user` varchar(50) COLLATE utf8_czech_ci NOT NULL,
@@ -122,10 +126,10 @@ CREATE TABLE `payments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabulky `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `name` varchar(80) COLLATE utf8_czech_ci NOT NULL,
   `password` varchar(60) COLLATE utf8_czech_ci NOT NULL,
@@ -133,47 +137,35 @@ CREATE TABLE `users` (
   `registrationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
---
--- Triggers `users`
---
-DELIMITER $$
-CREATE TRIGGER `registerUser` AFTER INSERT ON `users` FOR EACH ROW begin
-    insert into groups(owner, name, type) values(NEW.email, "Moje skupina", "private");
-  end
-$$
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
--- Structure for view `groups_users`
+-- Struktura pro pohled `groups_users`
 --
 DROP TABLE IF EXISTS `groups_users`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `groups_users`  AS  select `g`.`idGroup` AS `idGroup`,`g`.`name` AS `groupName`,`g`.`type` AS `type`,`g`.`owner` AS `owner`,`g`.`creationDate` AS `creationDate`,`u`.`email` AS `email`,`u`.`name` AS `userName`,`u`.`registrationDate` AS `registrationDate`,`gm`.`current` AS `current` from ((`group_members` `gm` join `groups` `g` on((`g`.`idGroup` = `gm`.`idGroup`))) join `users` `u` on((`u`.`email` = `gm`.`user`))) ;
+-- právě se používá(#1142 - SHOW VIEW command denied to user 'vladimirantos'@'88.86.120.129' for table 'groups_users')
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `group_payments`
+-- Struktura pro pohled `group_payments`
 --
 DROP TABLE IF EXISTS `group_payments`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `group_payments`  AS  select `g`.`idGroup` AS `idGroup`,`g`.`name` AS `groupName`,`g`.`owner` AS `owner`,`u`.`email` AS `email`,`u`.`name` AS `userName`, p.idPayment, `p`.`description` AS `description`,`p`.`price` AS `price`,`p`.`paymentsDate` AS `paymentsDate` from ((`payments` `p` join `groups` `g` on((`g`.`idGroup` = `p`.`idGroup`))) join `users` `u` on((`u`.`email` = `p`.`user`))) ;
-
---
--- Indexes for dumped tables
---
+-- právě se používá(#1142 - SHOW VIEW command denied to user 'vladimirantos'@'88.86.120.129' for table 'group_payments')
 
 --
--- Indexes for table `groups`
+-- Klíče pro exportované tabulky
+--
+
+--
+-- Klíče pro tabulku `groups`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`idGroup`),
   ADD KEY `owner` (`owner`);
 
 --
--- Indexes for table `group_members`
+-- Klíče pro tabulku `group_members`
 --
 ALTER TABLE `group_members`
   ADD PRIMARY KEY (`idGroupMember`),
@@ -181,7 +173,7 @@ ALTER TABLE `group_members`
   ADD KEY `user` (`user`);
 
 --
--- Indexes for table `log`
+-- Klíče pro tabulku `log`
 --
 ALTER TABLE `log`
   ADD PRIMARY KEY (`id`),
@@ -189,7 +181,13 @@ ALTER TABLE `log`
   ADD KEY `idGroup` (`idGroup`);
 
 --
--- Indexes for table `payments`
+-- Klíče pro tabulku `login_log`
+--
+ALTER TABLE `login_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Klíče pro tabulku `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`idPayment`),
@@ -197,62 +195,67 @@ ALTER TABLE `payments`
   ADD KEY `user` (`user`);
 
 --
--- Indexes for table `users`
+-- Klíče pro tabulku `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`email`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- AUTO_INCREMENT for table `groups`
+-- AUTO_INCREMENT pro tabulku `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `idGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idGroup` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `group_members`
+-- AUTO_INCREMENT pro tabulku `group_members`
 --
 ALTER TABLE `group_members`
-  MODIFY `idGroupMember` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idGroupMember` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `log`
+-- AUTO_INCREMENT pro tabulku `log`
 --
 ALTER TABLE `log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `payments`
+-- AUTO_INCREMENT pro tabulku `login_log`
+--
+ALTER TABLE `login_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `idPayment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idPayment` int(11) NOT NULL AUTO_INCREMENT;
 --
--- Constraints for dumped tables
+-- Omezení pro exportované tabulky
 --
 
 --
--- Constraints for table `groups`
+-- Omezení pro tabulku `groups`
 --
 ALTER TABLE `groups`
   ADD CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`owner`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `group_members`
+-- Omezení pro tabulku `group_members`
 --
 ALTER TABLE `group_members`
   ADD CONSTRAINT `group_members_ibfk_1` FOREIGN KEY (`idGroup`) REFERENCES `groups` (`idGroup`) ON DELETE CASCADE,
   ADD CONSTRAINT `group_members_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `log`
+-- Omezení pro tabulku `log`
 --
 ALTER TABLE `log`
   ADD CONSTRAINT `log_ibfk_1` FOREIGN KEY (`sender`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `log_ibfk_2` FOREIGN KEY (`idGroup`) REFERENCES `groups` (`idGroup`) ON DELETE CASCADE;
 
 --
--- Constraints for table `payments`
+-- Omezení pro tabulku `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`idGroup`) REFERENCES `groups` (`idGroup`) ON DELETE CASCADE,
