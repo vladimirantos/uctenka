@@ -45,6 +45,9 @@ class HomepagePresenter extends DashboardPresenter{
         $this->template->payments =
             $this->paymentService->getMonthly($this->getCurrentGroup()["idGroup"],
                 $currentMonth->getMonth() . '-'.$currentMonth->getYear());
+        $myPayments = array_filter($this->template->payments, function($i){return $i->userName == $this->getUserData()->identity->name;});
+        $this->template->sumMyPayments = array_sum(array_map(function($item){return $item->price;}, $myPayments));
+        $this->template->totalCostsInGroup = $this->paymentService->getTotalCostsGroup($this->getCurrentGroup()["idGroup"]);
     }
 
     protected function createComponentAddPaymentForm() {

@@ -62,6 +62,10 @@ class PaymentService extends BaseService{
         return $this->getRepository()->getTotalCosts($groupId, $dateTime);
     }
 
+    public function getTotalCostsGroup($idGroup){
+        return $this->paymentRepository->totalCosts($idGroup);
+    }
+
     public function delete(array $where){
         $this->paymentRepository->delete($where);
     }

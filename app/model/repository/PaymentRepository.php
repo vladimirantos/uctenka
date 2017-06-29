@@ -22,4 +22,8 @@ class PaymentRepository extends BaseRepository {
     public function __construct(Context $context) {
         parent::__construct($context, self::TABLE);
     }
+
+    public function totalCosts($idGroup){
+        return $this->getContext()->table(self::TABLE)->where(["idGroup" => $idGroup])->sum("price");
+    }
 }

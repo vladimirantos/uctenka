@@ -6,7 +6,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Celková útrata</span>
-                    <span class="info-box-number">128 639 <small>Kč</small></span>
+                    <span class="info-box-number">{$totalCostsInGroup} <small>Kč</small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -19,7 +19,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Tento měsíc</span>
-                    <span class="info-box-number">9 836 <small>Kč</small></span>
+                    <span class="info-box-number">
+                        {var $sum = 0}
+                        {foreach $payments as $payment}
+                        {var $sum += $payment->price}
+                        {/foreach}
+                        {$sum} <small>Kč</small>
+                    </span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -36,7 +42,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Moje útrata</span>
-                    <span class="info-box-number">5 237 <small>Kč</small></span>
+                    <span class="info-box-number">{$sumMyPayments} <small>Kč</small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -49,7 +55,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Počet položek</span>
-                    <span class="info-box-number">37</span>
+                    <span class="info-box-number">{count($payments)}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -122,11 +128,10 @@
                                     <td class="">{$payment->price|number:0:'.':' '} Kč</td>
                                     <td class="">{$payment->paymentsDate|date:'d. m. Y'}</td>
                                     <td class="">
-                                        {*<a n:href="editPayment! $payment->idPayment" class="btn btn-success btn-sm">Upravit</a>*}
-                                        <a n:href="deletePayment! $payment->idPayment" class="btn btn-danger btn-sm">Smazat</a>
-                                        {*{if $payment->hasItems > 0}*}
-                                        {*<a href="" class="btn btn-sm btn-success">Zobrazit položky platby</a>*}
-                                        {*{/if}*}
+
+                                            <a n:href="deletePayment! $payment->idPayment" class="btn btn-danger btn-sm">Smazat</a>
+
+
                                     </td>
                                 </tr>
                             {/foreach}
