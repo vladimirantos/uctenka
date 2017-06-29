@@ -21,6 +21,11 @@ class ReportPresenter extends DashboardPresenter {
         parent::startup();
     }
 
+    public function actionDefault(){
+        if(($date = $this->getParameter("date")) != null)
+            $this->template->month = "01." . str_replace("-", ".", $date);
+    }
+
     public function renderDefault(){
         $this->template->mainTitle = "Měsíční přehledy";
     }
@@ -29,7 +34,7 @@ class ReportPresenter extends DashboardPresenter {
         $groups = PairBinder::bind($this->groupMemberService->getAllUserGroups($this->user->identity->getId()), "idGroup", "groupName");
         $form = new Form();
         $form->addSelect("financialGroups", "Skupina", $groups)->setDefaultValue($this->getCurrentGroup()["idGroup"]);
-        $form->addText("date", "Měsíc")->setAttribute("placeholder", "Vyber měsíc");
+        $form->addText("date", "Měsíc")->setAttribute("placeholder", "Vyber měsíc")->setDefaultValue($this->getParameter("date"));
         $form->addSubmit("send", "Vygenerovat");
         $form->onSuccess[] = [$this, "reportFormSucceeded"];
         return $form;
