@@ -5,3 +5,4 @@ Verze 2.0.0
 - Na hlavní stránce statistiky plateb ve skupině
 - Skrytí tlačítka smazat u cizích plateb
 - Po smazání platby redirect na homepage (bez id v url)
+- Oddělení tisíců i součtu plateb v hlavičce

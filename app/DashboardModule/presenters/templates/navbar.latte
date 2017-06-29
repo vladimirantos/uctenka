@@ -30,7 +30,7 @@
         </ul>
         <div class="nav navbar-nav navbar-left fm-menu-info-panel">
         <span class="text"><strong>{$currentGroup["groupName"]}</strong></span>
-        {$currentGroup["totalPrice"] == null ? 0 : $currentGroup["totalPrice"]} Kč
+        {$currentGroup["totalPrice"] == null ? 0 : $currentGroup["totalPrice"]|number:0:'.':' '} Kč
         </div>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">

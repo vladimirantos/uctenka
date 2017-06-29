@@ -6,7 +6,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Celková útrata</span>
-                    <span class="info-box-number">{$totalCostsInGroup} <small>Kč</small></span>
+                    <span class="info-box-number">{$totalCostsInGroup|number:0:'.':' '} <small>Kč</small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -24,7 +24,7 @@
                         {foreach $payments as $payment}
                         {var $sum += $payment->price}
                         {/foreach}
-                        {$sum} <small>Kč</small>
+                        {$sum|number:0:'.':' '} <small>Kč</small>
                     </span>
                 </div>
                 <!-- /.info-box-content -->
@@ -42,7 +42,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Moje útrata</span>
-                    <span class="info-box-number">{$sumMyPayments} <small>Kč</small></span>
+                    <span class="info-box-number">{$sumMyPayments|number:0:'.':' '} <small>Kč</small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -55,7 +55,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Počet položek</span>
-                    <span class="info-box-number">{count($payments)}</span>
+                    <span class="info-box-number">{count($payments)|number:0:'.':' '}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
