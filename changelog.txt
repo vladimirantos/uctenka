@@ -4,3 +4,4 @@ Verze 2.0.0
 - změna session exiration z 20 minutes na 10 days
 - Na hlavní stránce statistiky plateb ve skupině
 - Skrytí tlačítka smazat u cizích plateb
+- Po smazání platby redirect na homepage (bez id v url)
