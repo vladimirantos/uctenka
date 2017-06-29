@@ -128,10 +128,9 @@
                                     <td class="">{$payment->price|number:0:'.':' '} Kč</td>
                                     <td class="">{$payment->paymentsDate|date:'d. m. Y'}</td>
                                     <td class="">
-
+                                        {if $payment->userName == $user->name}
                                             <a n:href="deletePayment! $payment->idPayment" class="btn btn-danger btn-sm">Smazat</a>
-
-
+                                        {/if}
                                     </td>
                                 </tr>
                             {/foreach}
