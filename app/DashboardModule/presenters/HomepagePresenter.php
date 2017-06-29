@@ -30,9 +30,6 @@ class HomepagePresenter extends DashboardPresenter{
      */
     public $groupMemberService;
 
-    /**
-     * @persistent
-     */
     public $idPayment;
 
     public function startup() {
@@ -60,23 +57,18 @@ class HomepagePresenter extends DashboardPresenter{
         $form->addText("price", "Cena")->setAttribute("placeholder", "Cena")->setRequired("Nezadal jsi cenu.");
         $form->addText("paymentsDate", "Datum")->setAttribute("placeholder", "Datum platby")->setRequired("Nezadal jsi datum.");
         $form->addHidden("user", $this->user->id);
-        $form->addSubmit("send", ((bool)$this->idPayment ? "Upravit platbu" : "Přidat platbu"));
+        $form->addSubmit("send", "Přidat platbu");
         $form->onSuccess[] = [$this, "addPaymentFormSucceeded"];
         return $form;
     }
 
     public function addPaymentFormSucceeded($form, $values){
       try{
-          if(!$this->idPayment){
               $this->paymentService->add((array)$values);
               $this->log->add(["sender" => $this->user->identity->getId(),
                   "idGroup" => $values->idGroup,
                   "text" => "Přidána platba v hodnotě " . $values->price . " Kč"]);
               $this->successMessage("Platba " . $values->price . ' Kč byla přidána.');
-          }else{
-              $this->paymentService->update((array)$values, ["idPayment" => $this->idPayment]);
-          }
-
       }catch (PaymentsException $ex){
           $this->errorMessage($ex->getMessage());
       }
@@ -95,7 +87,7 @@ class HomepagePresenter extends DashboardPresenter{
     public function handleDeletePayment($idPayment){
         $this->paymentService->delete(["idPayment" => $idPayment]);
         $this->successMessage("Platba byla úspěšně smazána.");
-        $this->redirect("this");
+        $this->redirect('Homepage:');
     }
 
     public function handleEditPayment($idPayment){
