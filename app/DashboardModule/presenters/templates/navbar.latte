@@ -31,6 +31,9 @@
         <div class="nav navbar-nav navbar-left fm-menu-info-panel">
         <span class="text"><strong>{$currentGroup["groupName"]}</strong></span>
         {$currentGroup["totalPrice"] == null ? 0 : $currentGroup["totalPrice"]|number:0:'.':' '} Kč
+            {if $isTest}
+            <span style="margin-left: 30px; color: #fff; background: red;">TESTOVACI VERZE</span>
+            {/if}
         </div>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
