@@ -6,10 +6,9 @@ application:
 	mapping:
 		*: App\*Module\Presenters\*Presenter
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=finance_manager'
+	dsn: 'mysql:host=127.0.0.1;dbname=uctenkadb'
 	user: root
 	password:
-
 session:
 	expiration: 10 days
 
@@ -35,6 +34,7 @@ constants:
 	defaultGroupName: 'Moje skupina'
 	defaultGroupType: 'private'
 	rate: 1
-	appVersion: '2.0.0 BETA'
-	releaseDate: '2016-11-04'
-	build: 1611
+	appVersion: '2.0.0'
+	releaseDate: '2017-07-10'
+	build: 1707
+	isTest: true
