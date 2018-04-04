@@ -1,5 +1,7 @@
 RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !^https$
 RewriteCond %{HTTP_HOST} ^(www\.)?uctenka.vladimirantos\.cz$
 RewriteRule ^$ www/ [L]
 RewriteCond %{HTTP_HOST} ^(www\.)?uctenka.vladimirantos\.cz$
 RewriteRule (.*) www/$1 [L]
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]  
