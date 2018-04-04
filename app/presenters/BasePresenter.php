@@ -16,6 +16,7 @@ class BasePresenter extends Presenter{
         $this->template->appVersion = appVersion;
         $this->template->releaseDate = releaseDate;
         $this->template->build = build;
+        $this->template->isTest = isTest;
     }
 
     public function errorMessage($message){
