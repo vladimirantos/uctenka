@@ -58,28 +58,14 @@ class GroupMemberService extends BaseService {
         foreach ($groups as $group){
             $date = DateTime::now();
             $totalCosts = $this->paymentService->userPaymetsSummary($group->idGroup, $date->getMonth() .'-'.$date->getYear());
+            $total = $this->paymentService->getTotalCostsGroup($group->idGroup);
             $group = $group->toArray();
 
             $x = 0;
             foreach ($totalCosts as $t)
                 $x += $t["totalPrice"];
             $group["totalPrice"] = $x;
-            $result[] = $group;
-        }
-        return $result;
-    }
-
-    /**
-     * Vrací seznam všech uživatelovo skupin s celkovou útratou za celou dobu existence.
-     * @param $userId
-     */
-    public function getTotalGroupsCosts($userId){
-        $groups = $this->getBy(["email" => $userId])->fetchAll();
-        $result = [];
-        foreach ($groups as $group) {
-            $totalCosts = $this->paymentService->getTotalCostsGroup($group->idGroup);
-            $group = $group->toArray();
-            $group["totalCosts"] = $totalCosts;
+            $group["total"] = $total;
             $result[] = $group;
         }
         return $result;
