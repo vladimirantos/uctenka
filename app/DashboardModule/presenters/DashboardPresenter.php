@@ -52,6 +52,7 @@ abstract class DashboardPresenter extends BasePresenter{
             $this->redirect(":Login:");
         $this->template->user = ($this->userData = $this->user->identity);
         $this->template->groups = $this->groupMemberService->myGroups($this->userData->email);
+        $this->template->totalGroups = $this->groupMemberService->getTotalGroupsCosts($this->userData->email);
         $this->currentGroup = $this->groupMemberService->current($this->userData->email);
         $this->template->currentGroup = $this->currentGroup;
         $this->template->lastLogs = $this->log->getLastLogs($this->user->identity->getId(),

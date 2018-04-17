@@ -69,6 +69,22 @@ class GroupMemberService extends BaseService {
         return $result;
     }
 
+    /**
+     * Vrací seznam všech uživatelovo skupin s celkovou útratou za celou dobu existence.
+     * @param $userId
+     */
+    public function getTotalGroupsCosts($userId){
+        $groups = $this->getBy(["email" => $userId])->fetchAll();
+        $result = [];
+        foreach ($groups as $group) {
+            $totalCosts = $this->paymentService->getTotalCostsGroup($group->idGroup);
+            $group = $group->toArray();
+            $group["totalCosts"] = $totalCosts;
+            $result[] = $group;
+        }
+        return $result;
+    }
+
     public function myGroupsWithMembers($userId){
         $data = $this->myGroups($userId);
         $result = [];

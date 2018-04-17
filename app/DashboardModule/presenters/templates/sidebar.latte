@@ -41,6 +41,17 @@
                     </a>
                 </li>
             {/foreach}
+
+            <li class="header">CELKOVÝ PŘEHLED SKUPIN</li>
+            {foreach $totalGroups as $group}
+                <li>
+                    <a n:href="changeCurrentGroup! $group['idGroup']">
+                        <i class="fa fa-inbox text-info"></i>
+                        <span class="sidebar-title text-muted">{$group["groupName"]}</span>
+                        <span class="pull-right text-muted">{$group["totalCosts"]} Kč</span>
+                    </a>
+                </li>
+            {/foreach}
         </ul>
     </section>
     <!-- /.sidebar -->
