@@ -31,7 +31,7 @@ class GroupPaymentRepository extends BaseRepository implements IPaymentRepositor
         $endDate = date("Y-m-t", strtotime($startDate));
         return $this->getBy(
             ["idGroup" => $idGroup, "paymentsDate BETWEEN ? AND ?" => [$startDate, $endDate]])
-            ->order("paymentsDate DESC")->fetchAll();
+            ->order("paymentsDate DESC")->select("*")->fetchAll();
     }
 
     public function userPaymetsSummary($idGroup, $date){

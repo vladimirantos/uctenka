@@ -56,4 +56,10 @@ class ReportPresenter extends DashboardPresenter {
         }
         $this->template->totalPrice = $total;
     }
+
+    public function handleDeletePayment($idPayment){
+        $this->paymentService->delete(["idPayment" => $idPayment]);
+        $this->successMessage("Platba byla úspěšně smazána.");
+        $this->redirect("this");
+    }
 }

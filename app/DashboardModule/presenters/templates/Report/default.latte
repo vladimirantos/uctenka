@@ -103,10 +103,11 @@
                     <table class="table admin-form theme-warning tc-checkbox-1 fs13">
                         <thead>
                         <tr class="bg-light">
-                            <th class="col-md-1">Vložil</th>
-                            <th class="col-md-2">Popis</th>
-                            <th class="col-md-1">Cena</th>
-                            <th class="col-md-1">Datum platby</th>
+                            <th class="col-md-2">Vložil</th>
+                            <th class="col-md-3">Popis</th>
+                            <th class="col-md-2">Cena</th>
+                            <th class="col-md-2">Datum platby</th>
+                            <th class="col-md-1"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -116,6 +117,11 @@
                                 <td>{$report["description"]}</td>
                                 <td>{$report["price"]|number:0:'.':' '} Kč</td>
                                 <td>{$report["paymentsDate"]|date:'d. m. Y'}</td>
+                                <td>
+                                    {if $report->userName == $user->name}
+                                        <a n:href="deletePayment! $report->idPayment" class="btn btn-danger btn-sm pull-right">Smazat</a>
+                                    {/if}
+                                </td>
                             </tr>
                         {/foreach}
                         </tbody>
