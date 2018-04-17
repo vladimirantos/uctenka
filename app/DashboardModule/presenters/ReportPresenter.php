@@ -33,7 +33,8 @@ class ReportPresenter extends DashboardPresenter {
     protected function createComponentReportForm(){
         $groups = PairBinder::bind($this->groupMemberService->getAllUserGroups($this->user->identity->getId()), "idGroup", "groupName");
         $form = new Form();
-        $form->addSelect("financialGroups", "Skupina", $groups)->setDefaultValue($this->getCurrentGroup()["idGroup"]);
+        $form->addSelect("financialGroups", "Skupina", $groups)
+            ->setDefaultValue(!array_key_exists("idGroup", $this->params) ? $this->getCurrentGroup()["idGroup"] : $this->params["idGroup"]);
         $form->addText("date", "Měsíc")->setAttribute("placeholder", "Vyber měsíc")->setDefaultValue($this->getParameter("date"));
         $form->addSubmit("send", "Vygenerovat");
         $form->onSuccess[] = [$this, "reportFormSucceeded"];
@@ -45,6 +46,10 @@ class ReportPresenter extends DashboardPresenter {
     }
 
     public function handleReport($idGroup, $date){
+        if(!$date){
+            $this->errorMessage("Nezadal jsi pro jaký měsíc chceš zobrazit platby");
+            $this->redirect("this");
+        }
         $this->template->reportData = $this->paymentService->getMonthly($idGroup, $date);
         if($this->template->reportData == null)
             $this->warningMessage("Pro měsíc ".$date." nejsou žádné platby");
