@@ -37,10 +37,10 @@
                     <a n:href="changeCurrentGroup! $group['idGroup']">
                         <i class="fa fa-inbox text-info"></i>
                         <span class="sidebar-title text-muted">{$group["groupName"]}</span>
-                        <span class="pull-right text-muted">{$group["totalPrice"]} Kč</span>
+                        <span class="pull-right text-muted">{$group["totalPrice"]|number:0:'.':' '} Kč</span>
                         <div class="sidebar-title text-muted" style="margin-left: 24px">
                             <small>Celkem: </small>
-                            <span class="pull-right text-muted"><small>{$group["total"]} Kč</small></span>
+                            <span class="pull-right text-muted"><small>{$group["total"]|number:0:'.':' '} Kč</small></span>
                         </div>
 
                     </a>
