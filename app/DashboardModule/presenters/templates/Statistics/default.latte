@@ -3,16 +3,44 @@
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Celkové statistiky</h3>
+                <h3 class="box-title">Celkový přehled</h3>
 
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
             </div>
             <div class="box-body">
-
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Celkem záznamů:</strong>
+                        <span class="pull-right">{$baseStats->totalRows|number:0:'':' '}</span>
+                    </div>
+                </div>
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Celková útrata:</strong>
+                        <span class="pull-right">{$baseStats->totalSum|number:0:'.':' '} Kč</span>
+                    </div>
+                </div>
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Tento měsíc:</strong>
+                        <span class="pull-right">{$baseStats->thisMonthSum|number:0:'.':' '} Kč</span>
+                    </div>
+                </div>
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Nejvíce v měsíci {$baseStats->maxMonth->month} {$baseStats->maxMonth->year}:</strong>
+                        <span class="pull-right">{$baseStats->maxMonth->price|number:0:'.':' '} Kč</span>
+                    </div>
+                </div>
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Nejméně v měsíci {$baseStats->minMonth->month} {$baseStats->minMonth->year}:</strong>
+                        <span class="pull-right">{$baseStats->minMonth->price|number:0:'.':' '} Kč</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -28,7 +56,63 @@
                 </div>
             </div>
             <div class="box-body">
+               <div class="row">
+                   <div class="col-md-6">
+                       <h4>Tento měsíc</h4>
+                       {foreach $baseStats->thisMonth as $m}
+                           <p>
+                               {$m->userName}:
+                                <span class="pull-right">{$m->totalPrice|number:0:'.':' '} Kč</span>
+                           </p>
+                       {/foreach}
+                   </div>
+                   <div class="col-md-6">
+                       <h4>Celkem</h4>
+                       {foreach $baseStats->totalByUser as $m}
+                           <p>
+                               {$m->userName}:
+                               <span class="pull-right">{$m->totalPrice|number:0:'.':' '} Kč</span>
+                           </p>
+                       {/foreach}
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="row center-block mt10">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Platby ve skupině</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <table class="table admin-form theme-warning tc-checkbox-1 fs13">
+                    <thead>
+                    <tr class="bg-light">
+                        <th class="col-md-3">Vložil</th>
+                        <th class="col-md-3">Popis</th>
+                        <th class="col-md-3">Cena</th>
+                        <th class="col-md-3">Datum platby</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $allPayments as $p}
+                        <tr>
+                            <td>{$p["userName"]}</td>
+                            <td>{$p["description"]}</td>
+                            <td>{$p["price"]|number:0:'.':' '} Kč</td>
+                            <td>{$p["paymentsDate"]|date:'d. m. Y'}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

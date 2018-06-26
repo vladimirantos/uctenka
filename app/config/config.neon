@@ -28,6 +28,8 @@ services:
 	- App\Model\Service\LogService
 	- App\Model\Service\PaymentService
 	- App\Model\Service\LoginLogService
+	- App\Model\Service\StatisticsService
+	- App\Model\Repository\StatisticsRepository
 	router: App\RouterFactory::createRouter
 
 constants:

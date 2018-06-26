@@ -1,7 +1,6 @@
 <?php
 namespace App\Model;
-
-use Nette\Object;
+use Nette\SmartObject;
 
 /**
  * Porovnává zadaný objekt s aktuálním.
@@ -24,7 +23,8 @@ interface IComparable{
  * @author Vladimír Antoš
  * @version 1.0.0
  */
-abstract class BaseObject extends Object{
+abstract class BaseObject {
+    use SmartObject;
 
     /**
      * @param mixed $obj
