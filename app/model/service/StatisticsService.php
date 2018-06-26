@@ -18,4 +18,8 @@ class StatisticsService extends BaseService {
     public function allPayments($groupId){
         return $this->getRepository()->allPayments($groupId);
     }
+
+    public function allMonthPayments($groupId){
+        return $this->getRepository()->allMonthsPayments($groupId);
+    }
 }

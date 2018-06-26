@@ -16,4 +16,8 @@ class StatisticsPresenter extends DashboardPresenter {
         $this->template->baseStats = $this->statisticsService->baseStats($groupId);
         $this->template->allPayments = $this->statisticsService->allPayments($groupId);
     }
+
+    public function actionChart(){
+        $this->sendResponse(new \Nette\Application\Responses\JsonResponse($this->statisticsService->allMonthPayments($this->getCurrentGroup()["idGroup"])));
+    }
 }

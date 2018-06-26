@@ -36,6 +36,13 @@ class StatisticsRepository extends BaseRepository {
         return $this->getContext()->table("group_payments")->where(["idGroup" => $groupId])->order("paymentsDate", "desc")->fetchAll();
     }
 
+    public function allMonthsPayments($groupId){
+        return $this->getContext()->query("SELECT Year(paymentsDate) as year, Month(paymentsDate) as month, SUM(price) as price
+            from payments
+            where idGroup=".$groupId."
+            group by Year(paymentsDate), Month(paymentsDate)")->fetchAll();
+    }
+
     private function userPaymetsSummary($idGroup, $startDate, $endDate){
         return $this->getContext()
             ->query("SELECT userName, SUM(price) AS totalPrice 
