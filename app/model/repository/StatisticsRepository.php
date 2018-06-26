@@ -29,6 +29,7 @@ class StatisticsRepository extends BaseRepository {
 
         $stats->maxMonth->month = $this->month($stats->maxMonth->month);
         $stats->minMonth->month = $this->month($stats->minMonth->month);
+        $stats->avg = $this->monthAvgPrice($groupId)->avg;
         return $stats;
     }
 
@@ -80,6 +81,14 @@ class StatisticsRepository extends BaseRepository {
                 ORDER BY price ASC LIMIT 1")->fetch();
     }
 
+    private function monthAvgPrice($groupId){
+        return $this->getContext()->query("SELECT AVG(x.price) as avg from (SELECT SUM(price) as price, Year(paymentsDate) as year, Month(paymentsDate) as month
+          from payments
+          where idGroup=".$groupId."
+          group by Year(paymentsDate), Month(paymentsDate)) as x
+        ")->fetch();
+    }
+
     private function month($month){
         static $months = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec", "srpen", "září", "říjen", "listopad", "prosinec"];
         return $months[$month - 1];
@@ -107,4 +116,5 @@ class Stats{
     public $minMonth;
 
     public $totalByUser;
+    public $avg;
 }

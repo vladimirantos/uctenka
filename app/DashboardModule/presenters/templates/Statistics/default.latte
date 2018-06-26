@@ -31,14 +31,20 @@
                 </div>
                 <div class="row stats">
                     <div class="col-md-7">
-                        <strong>Nejvíce v měsíci {$baseStats->maxMonth->month} {$baseStats->maxMonth->year}:</strong>
-                        <span class="pull-right">{$baseStats->maxMonth->price|number:0:'.':' '} Kč</span>
+                        <strong>Nejvíce v měsíci:</strong>
+                        <span class="pull-right">{$baseStats->maxMonth->month} {$baseStats->maxMonth->year} ({$baseStats->maxMonth->price|number:0:'.':' '} Kč)</span>
                     </div>
                 </div>
                 <div class="row stats">
                     <div class="col-md-7">
-                        <strong>Nejméně v měsíci {$baseStats->minMonth->month} {$baseStats->minMonth->year}:</strong>
-                        <span class="pull-right">{$baseStats->minMonth->price|number:0:'.':' '} Kč</span>
+                        <strong>Nejméně v měsíci:</strong>
+                        <span class="pull-right">{$baseStats->minMonth->month} {$baseStats->minMonth->year} ({$baseStats->minMonth->price|number:0:'.':' '} Kč)</span>
+                    </div>
+                </div>
+                <div class="row stats">
+                    <div class="col-md-7">
+                        <strong>Měsíční průměr:</strong>
+                        <span class="pull-right">{$baseStats->avg|number:2:'.':' '} Kč</span>
                     </div>
                 </div>
             </div>
