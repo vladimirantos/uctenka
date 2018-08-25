@@ -1,15 +1,12 @@
 <?php
 namespace App\DashboardModule\Presenters;
-use App\Model\ArgumentException;
 use App\Model\DateTime;
 use App\Model\PairBinder;
 use App\Model\PaymentsException;
 use App\Model\Service\GroupMemberService;
-use App\Model\Service\GroupService;
-use App\Model\Service\LoginLogService;
-use App\Model\Service\LogService;
 use App\Model\Service\PaymentService;
 use Nette\Application\UI\Form;
+use Nette\Utils\ArrayHash;
 
 
 /**
@@ -53,6 +50,7 @@ class HomepagePresenter extends DashboardPresenter{
         $form->addSelect("idGroup", "Skupina", $groups)
             ->setDefaultValue($this->getCurrentGroup()["idGroup"])
             ->setRequired("Nevybral jsi skupinu.");
+        $form->addSelect("idGroupCopy", "Kopie", $groups)->setPrompt(null);
         $form->addText("description", "Popis")->setAttribute("placeholder", "Popis")->setRequired("Nezadal jsi popis platby.");
         $form->addText("price", "Cena")->setAttribute("placeholder", "Cena")->setRequired("Nezadal jsi cenu.");
         $form->addText("paymentsDate", "Datum")->setAttribute("placeholder", "Datum platby")->setRequired("Nezadal jsi datum.");
@@ -64,11 +62,16 @@ class HomepagePresenter extends DashboardPresenter{
 
     public function addPaymentFormSucceeded($form, $values){
       try{
-              $this->paymentService->add((array)$values);
-              $this->log->add(["sender" => $this->user->identity->getId(),
-                  "idGroup" => $values->idGroup,
-                  "text" => "Přidána platba v hodnotě " . $values->price . " Kč"]);
-              $this->successMessage("Platba " . $values->price . ' Kč byla přidána.');
+          $copyValues = ArrayHash::from((array)$values);
+          $canCreateCopy = $copyValues["idGroup"] != $copyValues["idGroupCopy"] && $copyValues["idGroupCopy"] != null;
+          unset($values["idGroupCopy"]);
+          $this->savePayment($values);
+          if($canCreateCopy){
+              $copyValues["idGroup"] = $copyValues["idGroupCopy"];
+              unset($copyValues["idGroupCopy"]);
+              $this->savePayment($copyValues);
+          }
+          $this->successMessage("Platba " . $values->price . ' Kč byla přidána.');
       }catch (PaymentsException $ex){
           $this->errorMessage($ex->getMessage());
       }
@@ -99,5 +102,12 @@ class HomepagePresenter extends DashboardPresenter{
         }
         $data["paymentsDate"] = $data["paymentsDate"]->format("d.m.Y");
         $this["addPaymentForm"]->setDefaults($data);
+    }
+
+    private function savePayment($values){
+        $this->paymentService->add((array)$values);
+        $this->log->add(["sender" => $this->user->identity->getId(),
+            "idGroup" => $values->idGroup,
+            "text" => "Přidána platba v hodnotě " . $values->price . " Kč"]);
     }
 }
